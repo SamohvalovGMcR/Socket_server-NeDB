@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+	<meta charset="utf-8">
+  </head>
+
+  <body>
+   <div  id="" style="width:80%;  height:70px; border: 2px solid green; text-align:center;">
+     
+  <script src="http://82.146.62.225:3033/socket.io/socket.io.js"></script>
+    
+    
+   Пока беспратный сервис 
+  <div>
+    <input id="str1" name="d" type="text" maxlength="65" size="68" placeholder="строка">_<br>
+	<input id="src1" name="d" type="text" maxlength="1165" size="68" placeholder="src">_<br>
+    <input id="url1" type="url" name="m" maxlength="1000" size="33" placeholder="http://"><button id="send">send</button>
+    
+  </div>
+  
+  
+  </div>
+ <br><br><input id="del1" name="dl" type="text" placeholder="del"><button id="del">del</button>
+/___________________________________/ 
+    <button id="delall">delall</button> 
+<script>
+var socket = io.connect('http://82.146.62.225:3033');
+
+
+socket.on('whuN', function () {
+   socket.emit("whuS");
+});
+
+
+socket.on('whu', function (value) {
+  in2.innerHTML ="";
+//in2.innerHTML =JSON.stringify(value);
+ value.map(el=>{
+ var divE = document.createElement('div');
+ var divp = document.createElement('span');
+ var divA = document.createElement('a');
+ 
+ 
+ divp.innerHTML ="<br> "+el.str+"="+el.http+"="+el._id+"<br> ";
+ divA.target="_blank";
+ divA.href=el.http;
+ 
+ var divI = document.createElement('img');
+ divI.src = el.src;
+ divA.appendChild(divI);
+ 
+ divE.appendChild(divp);
+ divE.appendChild(divA);
+ in2.appendChild(divE);
+ });//map
+ 
+ 
+});
+
+
+send.onclick=function() {
+if(url1.value.slice(0,7)==="http://"||url1.value.slice(0,8)==="https://") {  
+socket.emit("addB",({str:str1.value, http:url1.value, src:src1.value}));
+str1.value=""; 
+url1.value="";
+src1.value="";
+}else {alert("no url")};
+};
+
+del.onclick=function() {
+socket.emit("delB",(del1.value));
+del1.value="";
+};
+
+delall.onclick=function() {
+socket.emit("delAll","");
+};
+
+</script>
+
+ 
+
+<div  id="in2" style=" border: 2px solid red; padding:5px">
+  </div>
+  </body>
+
+</html>
